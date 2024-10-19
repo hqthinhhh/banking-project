@@ -10,7 +10,6 @@ const port = 3000;
 
 app.use(express.json());
 
-// Kết nối MongoDB
 mongoose.connect('mongodb://localhost:27017/bankdb', {
   useNewUrlParser: true,
   useUnifiedTopology: true,
@@ -20,7 +19,6 @@ mongoose.connect('mongodb://localhost:27017/bankdb', {
   console.error('MongoDB connection error:', err);
 });
 
-// Sử dụng các route
 app.use('/customers', customerRoutes);
 app.use('/accounts', accountRoutes);
 app.use('/employees', employeeRoutes);

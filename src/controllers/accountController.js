@@ -15,7 +15,7 @@ const createAccount = async (req, res) => {
       return res.status(404).json({ message: 'Customer not found' });
     }
     // check if the employee exists
-    const employee = await Employee.findById(employeeId); // Giả định bạn có model Employee
+    const employee = await Employee.findById(employeeId);
     if (!employee) {
       return res.status(404).json({ message: 'Employee not found' });
     }

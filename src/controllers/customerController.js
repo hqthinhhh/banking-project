@@ -12,15 +12,14 @@ const getNextSequence = async (name) => {
   return counter.seq;
 };
 
-// Tạo khách hàng mới
 const createCustomer = async (req, res) => {
   const { CMT, name, customerID, dob, address } = req.body;
 
   try {
-    // const customerID = await getNextSequence('customerID');
+    const idForCustomer = customerID ? customerID : await getNextSequence('customerID');
 
     const newCustomer = new Customer({
-      customerID,
+      customerID: idForCustomer,
       CMT,
       name,
       dob,
@@ -35,13 +34,10 @@ const createCustomer = async (req, res) => {
   }
 };
 
-// Liệt kê thông tin của 10 khách hàng có tổng số tiền gửi lớn nhất
 const getTopCustomersByDeposit = async (req, res) => {
   try {
-    // Lấy tất cả các tài khoản gửi tiền (deposit)
     const depositAccounts = await BankAccount.find({ accountType: 'deposit' });
 
-    // Tạo Map để lưu tổng số dư của mỗi khách hàng
     const customerDeposits = {};
 
     depositAccounts.forEach(account => {
@@ -52,14 +48,13 @@ const getTopCustomersByDeposit = async (req, res) => {
       }
     });
 
-    // Chuyển Map thành array và sort theo tổng số dư giảm dần
     const sortedCustomers = Object.keys(customerDeposits)
       .map(customerID => ({
         customerID,
         totalDeposit: customerDeposits[customerID],
       }))
       .sort((a, b) => b.totalDeposit - a.totalDeposit)
-      .slice(0, 10); // Lấy 10 khách hàng có tổng số tiền gửi lớn nhất
+      .slice(0, 10);
 
     // Lấy thông tin chi tiết của 10 khách hàng này
     const topCustomers = await Promise.all(

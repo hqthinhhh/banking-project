@@ -7,7 +7,6 @@ const createEmployee = async (req, res) => {
   const { employeeID, CMT, name, dob, address, level, seniority, position } = req.body;
 
   try {
-    // Kiểm tra xem nhân viên đã tồn tại chưa
     const existingEmployee = await Employee.findOne({ CMT });
     if (existingEmployee) {
       return res.status(400).json({ message: 'Employee with this identity card already exists' });
@@ -24,7 +23,6 @@ const createEmployee = async (req, res) => {
       position,
     });
 
-    // Lưu nhân viên vào database
     await newEmployee.save();
     return res.status(201).json(newEmployee);
   } catch (error) {
